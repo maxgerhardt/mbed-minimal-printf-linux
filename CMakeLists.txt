@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.16)
 project(minimal_printf_debugging)
 
 set(CMAKE_CXX_STANDARD 14)
