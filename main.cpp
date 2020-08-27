@@ -10,7 +10,7 @@ extern "C" {
 int mbed_minimal_printf(const char* format, ...) {
     va_list arguments;
     va_start(arguments, format);
-    int result = mbed_minimal_formatted_string(NULL, INT_MAX-1, format,
+    int result = mbed_minimal_formatted_string(NULL, INT_MAX, format,
                                                arguments, stdout);
     //    int result = mbed_minimal_formatted_string(NULL, LONG_MAX, format,
 //                                               arguments, stdout);
