@@ -308,7 +308,7 @@ static void mbed_minimal_formatted_string_void_pointer(char *buffer, size_t leng
     /* write rest as a regular hexadecimal number */
     mbed_minimal_formatted_string_hexadecimal(buffer, length, result,
                                               (ptrdiff_t) value, stream, true,
-                                              false, -1);
+                                              false, 0);
 }
 
 #if MBED_CONF_PLATFORM_MINIMAL_PRINTF_ENABLE_FLOATING_POINT
