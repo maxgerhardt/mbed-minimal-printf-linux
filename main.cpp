@@ -60,6 +60,10 @@ void test_float_regression() {
             "Time to HS expiry is %lld (%.2f) with now = %lld expiresHSTime = %lld\n",
             (long long int) diff_time, diff_time, now, now + 1LL);
 
+    //fitted to zero
+    mbed_minimal_printf(
+            "Test %%f: %f [expecting 456.200000]\n", 456.2);
+
 }
 
 int main() {

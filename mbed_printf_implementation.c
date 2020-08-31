@@ -69,7 +69,7 @@
 /**
  * Precision defines
  */
-#define PRECISION_DEFAULT (INT_MAX)
+#define PRECISION_DEFAULT (6)
 
 /**
  * Enum for storing width modifier.
