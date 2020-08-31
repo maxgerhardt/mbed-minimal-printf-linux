@@ -259,7 +259,10 @@ static void mbed_minimal_formatted_string_void_pointer(char *buffer, size_t leng
  * @param      result  The current output location.
  * @param[in]  value   The value to be printed.
  */
-static void mbed_minimal_formatted_string_double(char *buffer, size_t length, int *result, double value, FILE *stream)
+static void
+mbed_minimal_formatted_string_double(char* buffer, size_t length, int* result,
+                                     double value, FILE* stream,
+                                     int num_decimals)
 {
     /* get integer part */
     MBED_SIGNED_STORAGE integer = value;
@@ -272,8 +275,9 @@ static void mbed_minimal_formatted_string_double(char *buffer, size_t length, in
 
     /* get decimal part */
     double precision = 1.0;
-
-    for (size_t index = 0; index < MBED_CONF_PLATFORM_MINIMAL_PRINTF_SET_FLOATING_POINT_MAX_DECIMALS; index++) {
+    //instead of going statically to
+    //MBED_CONF_PLATFORM_MINIMAL_PRINTF_SET_FLOATING_POINT_MAX_DECIMALS
+    for (size_t index = 0; index < num_decimals; index++) {
         precision *= 10;
     }
 
@@ -589,7 +593,9 @@ int mbed_minimal_formatted_string(char *buffer, size_t length, const char *forma
                     double value = va_arg(arguments, double);
                     index = next_index;
 
-                    mbed_minimal_formatted_string_double(buffer, length, &result, value, stream);
+                    mbed_minimal_formatted_string_double(buffer, length,
+                                                         &result, value, stream,
+                                                         precision);
                 }
 #endif
                     /* character */
