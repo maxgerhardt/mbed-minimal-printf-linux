@@ -30,7 +30,7 @@
 #endif
 
 #ifndef MBED_CONF_PLATFORM_MINIMAL_PRINTF_ENABLE_FLOATING_POINT
-#define MBED_CONF_PLATFORM_MINIMAL_PRINTF_ENABLE_FLOATING_POINT 0
+#define MBED_CONF_PLATFORM_MINIMAL_PRINTF_ENABLE_FLOATING_POINT 1
 #endif
 
 #ifndef MBED_CONF_PLATFORM_MINIMAL_PRINTF_SET_FLOATING_POINT_MAX_DECIMALS
@@ -474,6 +474,7 @@ int mbed_minimal_formatted_string(char *buffer, size_t length, const char *forma
                  * look for precision modifier
                  *************************************************************/
                 int precision = PRECISION_DEFAULT;
+                bool no_precision_given = false;
 
                 if ((format[next_index] == '.') &&
                     (format[next_index + 1] == '*')) {
@@ -498,6 +499,8 @@ int mbed_minimal_formatted_string(char *buffer, size_t length, const char *forma
 
                     /* move index forward to point at next character */
                     next_index += inner_index;
+                } else {
+                    no_precision_given = true;
                 }
 
                 /**************************************************************
@@ -694,7 +697,17 @@ int mbed_minimal_formatted_string(char *buffer, size_t length, const char *forma
                     char *value = va_arg(arguments, char *);
                     index = next_index;
 
-                    mbed_minimal_formatted_string_string(buffer, length, &result, value, precision, stream);
+                    //special case for precision and strings:
+                    //since precision is default initialized to 6 for the
+                    //floating point path, we have to take care of the
+                    //default path for strings specially.
+                    //the original code hat precision = INT_MAX, so let's
+                    //use that if no precision was given.
+                    mbed_minimal_formatted_string_string(buffer, length,
+                                                         &result, value,
+                                                         no_precision_given
+                                                         ? INT_MAX : precision,
+                                                         stream);
                 }
                     /* pointer */
                 else if (next == 'p') {

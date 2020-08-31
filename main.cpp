@@ -66,6 +66,29 @@ void test_float_regression() {
 
 }
 
+
+void test_embedded_regressions() {
+
+    char time_buf[64] = {0};
+    time_t current_time_millis = time(nullptr) * 1000LL;
+    time_t unix_time = current_time_millis / 1000ULL;
+    struct tm* timeinfo = localtime(&unix_time);
+    strftime(time_buf, sizeof(time_buf), "%Y-%m-%d %H:%M:%S", timeinfo);
+
+    mbed_minimal_printf("[%02X][%02X][%02X][%02d:%d%d][%s][%s / %llu] Test",
+           0x01, //main state
+           0xF0, //short handshake status
+           0x20, //app
+           7, //SFI
+           0, //SPI
+           1, //radio
+           "I", //log prefix
+           time_buf,
+           current_time_millis
+           );
+
+}
+
 int main() {
     printf("Teeeest\n");
     fflush(stdout);
@@ -74,5 +97,6 @@ int main() {
 
     test_regression();
     test_float_regression();
+    test_embedded_regressions();
     return 0;
 }
